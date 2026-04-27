@@ -90,4 +90,4 @@ class game():
 
 
     def end_game(self):
-        
+        choice = ""

@@ -1,7 +1,7 @@
 import random
 
 class game():
-    def __init__(self):
+    def __init__(self):        
         self.num_players = 0
         self.names = []
         self.player_pos = {}
@@ -9,7 +9,7 @@ class game():
         self.snakes = {16: 6, 48: 30, 64: 60, 93: 73, 95: 75, 98: 78}
         self.ladders = {1: 38, 4: 14, 9: 31, 21: 42, 28: 84, 36: 44, 51: 67, 71: 91, 80: 100}
         self.match_history = {}
-        
+
 
 
     def start_game(self):
@@ -77,7 +77,7 @@ class game():
                 game_won = True
 
             else:
-                self.active_player_index = (self.active_player_index + 1) % sselfelf.num_players #moves to the next player in the order
+                self.active_player_index = (self.active_player_index + 1) % self.num_players #moves to the next player in the order
                 print("--------------------------------------------------------------\n")
 
         if(winner in self.match_history): #add winner to match history
@@ -90,4 +90,3 @@ class game():
 
 
     def end_game(self):
-        choice = ""

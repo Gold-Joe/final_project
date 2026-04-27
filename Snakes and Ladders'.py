@@ -77,11 +77,17 @@ class game():
                 game_won = True
 
             else:
-                self.active_player_index = (self.active_player_index + 1) % self.num_players #moves to the next player in the order
+                self.active_player_index = (self.active_player_index + 1) % sselfelf.num_players #moves to the next player in the order
                 print("--------------------------------------------------------------\n")
 
         if(winner in self.match_history): #add winner to match history
             self.match_history[winner] += 1
         else:
             self.match_history[winner] = 1
+        
+        self.end_game()
+
+
+
+    def end_game(self):
         

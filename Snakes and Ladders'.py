@@ -45,13 +45,17 @@ class game():
     def play(self):
         winner = ""
         game_won = False
+        choice = ""
 
         while(not game_won):
             current_name = self.names[self.active_player_index]
-            input(f"{current_name}'s turn, Press Enter to roll the dice\n")
+            choice = input(f"{current_name}'s turn, press Enter (any input) to roll the dice or type Quit to exit to main menu: ")
+            
+            if (choice == "Quit"):
+                game_won = True
             
             roll = random.randint(1, 6)
-            print(f"{current_name} rolled a {roll}\n")
+            print(f"\n{current_name} rolled a {roll}\n")
             
             old_pos = self.player_pos[current_name]
             new_pos = old_pos + roll
@@ -80,10 +84,11 @@ class game():
                 self.active_player_index = (self.active_player_index + 1) % self.num_players #moves to the next player in the order
                 print("--------------------------------------------------------------\n")
 
-        if(winner in self.match_history): #add winner to match history
-            self.match_history[winner] += 1
-        else:
-            self.match_history[winner] = 1
+        if(winner): #add winner to match history, skips if game was quit
+            if(winner in self.match_history): 
+                self.match_history[winner] += 1
+            else:
+                self.match_history[winner] = 1
         
         self.end_game()
 
@@ -91,9 +96,10 @@ class game():
 
     def end_game(self):
         choice = ""
+        print("--------------------------------------------------------------\n")
 
         while (choice not in ["1", "2", "3", "4"]):
-            print("\n1. Play again (Same Players)")
+            print("1. Play again (Same Players)")
             print("2. New Game (Wipe everything)")
             print("3. View Match History")
             print("4. Quit Game")
@@ -108,11 +114,11 @@ class game():
                 self.start_game()
 
             elif (choice == "3"):
-                #do later
+                self.view_match_history()
 
             elif (choice == "4"):
-                # effectively quits since no code runs
                 print("\nThank you for playing, have a great day")
+                #effectively quits since no code runs
 
             else:
                 print("\nInvalid selection, try again\n")
@@ -128,7 +134,32 @@ class game():
         else:
             idx = 0
 
-            # just resets the position of current players (new game with same players)
+            #just resets the position of current players (new game with same players)
             while (idx < len(self.names)):
                 self.player_pos[self.names[idx]] = 1
                 idx += 1
+    
+
+
+    def view_match_history(self):
+        print("\n--------- MATCH HISTORY ---------")
+
+        if (not self.match_history):
+            print("No games recorded yet")
+
+        else:
+            history_keys = list(self.match_history.keys())
+            idx = 0
+
+            while (idx < len(history_keys)):
+                name = history_keys[idx]
+                print(f"{name}: {self.match_history[name]} wins")
+                idx += 1
+
+        print("---------------------------------\n")
+
+        self.end_game()
+
+
+my_game = game()
+my_game.start_game()

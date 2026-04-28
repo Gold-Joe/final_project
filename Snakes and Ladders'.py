@@ -7,7 +7,7 @@ class game():
         self.player_pos = {}
         self.active_player_index = 0
         self.snakes = {16: 6, 48: 30, 64: 60, 93: 73, 95: 75, 98: 78}
-        self.ladders = {1: 38, 4: 14, 9: 31, 21: 42, 28: 84, 36: 44, 51: 67, 71: 91, 80: 100}
+        self.ladders = {2: 38, 4: 14, 9: 31, 21: 42, 28: 84, 36: 44, 51: 67, 71: 91, 80: 100}
         self.match_history = {}
 
 
@@ -15,7 +15,7 @@ class game():
     def start_game(self):
         while(self.num_players <= 1):
             try:
-                self.num_players = int(input("Hello Player, Welcome to Snakes and Ladders, how many players will be playing today?(positive int > 1):"))
+                self.num_players = int(input("\nHello Player, Welcome to Snakes and Ladders, how many players will be playing today?(positive int > 1):"))
 
                 if(self.num_players <= 0):
                     print("Invalid input, please enter a positive integer")
@@ -53,36 +53,38 @@ class game():
             
             if (choice == "Quit"):
                 game_won = True
-            
-            roll = random.randint(1, 6)
-            print(f"\n{current_name} rolled a {roll}\n")
-            
-            old_pos = self.player_pos[current_name]
-            new_pos = old_pos + roll
-            
-            if(new_pos > 100):
-                print(f"You need exactly 100 to win, You stay at square {old_pos}\n")
-                new_pos = old_pos
-
-            if(new_pos in self.ladders):
-                print(f"You landed on a Ladder, it took you from square {new_pos} to {self.ladders[new_pos]}\n")
-                new_pos = self.ladders[new_pos]
-                
-            if(new_pos in self.snakes):
-                print(f"You landed on a Snake, it took you from square {new_pos} to {self.snakes[new_pos]}\n")
-                new_pos = self.snakes[new_pos]
-            
-            self.player_pos[current_name] = new_pos #update position after role
-            print(f"{current_name} is now at square {new_pos}\n")
-            
-            if(new_pos == 100): #win con
-                print(f"Congradulations {current_name}, you win!\n")
-                winner = current_name
-                game_won = True
+                print() #spacer for text
 
             else:
-                self.active_player_index = (self.active_player_index + 1) % self.num_players #moves to the next player in the order
-                print("--------------------------------------------------------------\n")
+                roll = random.randint(1, 6)
+                print(f"\n{current_name} rolled a {roll}\n")
+                
+                old_pos = self.player_pos[current_name]
+                new_pos = old_pos + roll
+                
+                if(new_pos > 100):
+                    print(f"You need exactly 100 to win, You stay at square {old_pos}\n")
+                    new_pos = old_pos
+
+                if(new_pos in self.ladders):
+                    print(f"You landed on a Ladder, it took you from square {new_pos} to {self.ladders[new_pos]}\n")
+                    new_pos = self.ladders[new_pos]
+                    
+                if(new_pos in self.snakes):
+                    print(f"You landed on a Snake, it took you from square {new_pos} to {self.snakes[new_pos]}\n")
+                    new_pos = self.snakes[new_pos]
+                
+                self.player_pos[current_name] = new_pos #update position after role
+                print(f"{current_name} is now at square {new_pos}\n")
+                
+                if(new_pos == 100): #win con
+                    print(f"Congradulations {current_name}, you win!\n")
+                    winner = current_name
+                    game_won = True
+
+                else:
+                    self.active_player_index = (self.active_player_index + 1) % self.num_players #moves to the next player in the order
+                    print("--------------------------------------------------------------\n")
 
         if(winner): #add winner to match history, skips if game was quit
             if(winner in self.match_history): 
@@ -100,7 +102,7 @@ class game():
 
         while (choice not in ["1", "2", "3", "4"]):
             print("1. Play again (Same Players)")
-            print("2. New Game (Wipe everything)")
+            print("2. New Game (Wipe everything but match history)")
             print("3. View Match History")
             print("4. Quit Game")
             choice = input("Select an option(1-4): ")
@@ -122,6 +124,8 @@ class game():
 
             else:
                 print("\nInvalid selection, try again\n")
+
+
 
     def reset(self, full_reset):
         self.active_player_index = 0
